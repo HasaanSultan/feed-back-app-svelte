@@ -1,10 +1,8 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { FeedbackStore } from "../store";
   import Button from "./Button.svelte";
   import Card from "./Card.svelte";
   import RatingSelect from "./RatingSelect.svelte";
-
-  const dispatch = createEventDispatcher();
 
   let text = "";
   let message = "";
@@ -24,8 +22,7 @@
         rating: +rating,
         text,
       };
-
-      dispatch("add-feedback", newFeedback);
+      FeedbackStore.update((currentItem) => [...currentItem, newFeedback]);
     }
   };
 
@@ -44,7 +41,6 @@
   <header><h2>How would you rate your services with us?</h2></header>
   <form on:submit|preventDefault={handleSubmit}>
     <RatingSelect on:rating-select={handleSelect} />
-    <!-- Rating Select -->
     <div class="input-group">
       <input
         type="text"
