@@ -24,14 +24,18 @@
   $: average = (
     feedback.reduce((a, { rating }) => a + rating, 0) / count
   ).toFixed(2);
+
+  const handleSubmit = (e) => {
+    feedback = [...feedback, e.detail];
+  };
+
   const deleteFeedback = (e) => {
-    console.log(e, "event");
     feedback = feedback.filter((x) => x.id !== e.detail);
   };
 </script>
 
 <main class="container">
-  <FeedbackForm />
+  <FeedbackForm on:add-feedback={handleSubmit} />
   <FeedbackStats {count} {average} />
   <FeedbackList {feedback} on:delete-feedback={deleteFeedback} />
 </main>

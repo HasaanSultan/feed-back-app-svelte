@@ -1,13 +1,33 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import Button from "./Button.svelte";
   import Card from "./Card.svelte";
   import RatingSelect from "./RatingSelect.svelte";
+
+  const dispatch = createEventDispatcher();
+
   let text = "";
   let message = "";
   let rating = 10;
 
   let btnDisabled = true;
   let min = 10;
+
+  const handleSelect = (e) => {
+    rating = e.detail;
+  };
+
+  const handleSubmit = () => {
+    if (text.trim().length >= min) {
+      const newFeedback = {
+        id: Math.random(),
+        rating: +rating,
+        text,
+      };
+
+      dispatch("add-feedback", newFeedback);
+    }
+  };
 
   const handleInput = () => {
     if (text.trim().length <= min) {
@@ -22,8 +42,8 @@
 
 <Card>
   <header><h2>How would you rate your services with us?</h2></header>
-  <form>
-    <RatingSelect />
+  <form on:submit|preventDefault={handleSubmit}>
+    <RatingSelect on:rating-select={handleSelect} />
     <!-- Rating Select -->
     <div class="input-group">
       <input
