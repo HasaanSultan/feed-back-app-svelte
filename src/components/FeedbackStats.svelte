@@ -2,9 +2,12 @@
   import { FeedbackStore } from "../store";
 
   $: count = $FeedbackStore.length;
-  $: average = (
-    $FeedbackStore.reduce((a, { rating }) => a + rating, 0) / count
-  ).toFixed(2);
+  $: average =
+    (count &&
+      ($FeedbackStore.reduce((a, { rating }) => a + rating, 0) / count).toFixed(
+        2
+      )) ||
+    0;
 </script>
 
 <div class="feedback-state">
